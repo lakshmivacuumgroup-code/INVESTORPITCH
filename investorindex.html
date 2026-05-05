@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lakshmi Vacuum Group — Investor Pitch Deck</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],playfair:['Playfair Display','serif'],space:['Space Grotesk','sans-serif']}}}}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Inter',sans-serif;background:#050505;color:#fafaf9;overflow:hidden}
+.font-playfair{font-family:'Playfair Display',serif}
+.font-space{font-family:'Space Grotesk',sans-serif}
+
+.slide-wrap{position:fixed;inset:0;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility .6s ease;overflow-y:auto;overflow-x:hidden}
+.slide.active{opacity:1;visibility:visible}
+.slide-inner{width:100%;max-width:1200px;margin:0 auto;padding:40px 32px;position:relative;z-index:2}
+
+.bg-layer{position:absolute;inset:0;z-index:0;pointer-events:none}
+.bg-mesh{background:radial-gradient(ellipse at 15% 50%,rgba(16,185,129,.07),transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(6,95,70,.09),transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(4,120,87,.05),transparent 50%)}
+.bg-grid{background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:60px 60px}
+
+.progress-top{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#10b981,#6ee7b7);z-index:200;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px rgba(16,185,129,.5)}
+
+.side-nav{position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;gap:12px}
+.side-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.1);border:none;cursor:pointer;transition:all .35s ease;position:relative;padding:0}
+.side-dot::before{content:attr(data-tip);position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:500;color:rgba(255,255,255,.4);white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;font-family:'Space Grotesk',sans-serif}
+.side-dot:hover{background:rgba(255,255,255,.3);transform:scale(1.6)}
+.side-dot:hover::before{opacity:1}
+.side-dot.on{background:#10b981;transform:scale(1.8);box-shadow:0 0 10px rgba(16,185,129,.6)}
+
+.bottom-bar{position:fixed;bottom:20px;left:24px;right:24px;z-index:200;display:flex;align-items:center;justify-content:space-between}
+.bottom-left{display:flex;align-items:center;gap:8px}
+.bottom-right{display:flex;align-items:center;gap:10px}
+.nav-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;color:rgba(255,255,255,.35)}
+.nav-btn:hover{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:#34d399}
+.nav-btn.off{opacity:0;pointer-events:none}
+.pdf-btn{display:flex;align-items:center;gap:7px;padding:8px 18px;border-radius:100px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.18);color:#6ee7b7;font-size:11px;font-weight:500;cursor:pointer;transition:all .25s;font-family:'Inter',sans-serif;backdrop-filter:blur(8px)}
+.pdf-btn:hover{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.35);transform:translateY(-1px)}
+.pdf-btn svg{width:13px;height:13px}
+.counter{font-size:10px;font-weight:500;color:rgba(255,255,255,.2);letter-spacing:.12em;font-family:'Space Grotesk',sans-serif}
+.counter b{color:#10b981;font-weight:700}
+
+.loading-mask{position:fixed;inset:0;background:rgba(5,5,5,.97);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.loading-mask.show{display:flex}
+.spin-ring{width:32px;height:32px;border:2px solid rgba(255,255,255,.08);border-top-color:#10b981;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeL{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeR{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse2{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.slide.active .au{animation-fill-mode:forwards}
+.au{opacity:0}
+.au-up{animation:fadeUp .65s cubic-bezier(.16,1,.3,1) forwards}
+.au-l{animation:fadeL .65s cubic-bezier(.16,1,.3,1) forwards}
+.au-r{animation:fadeR .65s cubic-bezier(.16,1,.3,1) forwards}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.3s}.d6{animation-delay:.36s}.d7{animation-delay:.42s}.d8{animation-delay:.48s}
+
+.gt{background:linear-gradient(135deg,#6ee7b7,#10b981,#047857);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradShift 5s ease infinite}
+.sn{font-variant-numeric:tabular-nums;font-family:'Space Grotesk',sans-serif;font-weight:300;letter-spacing:-.02em}
+
+.gc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;transition:all .3s}
+.gc:hover{background:rgba(255,255,255,.04);border-color:rgba(16,185,129,.12);transform:translateY(-2px)}
+.gc-a{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.1);border-radius:12px}
+
+.tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:100px;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.12);color:#6ee7b7;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:100px;font-size:9px;font-weight:500;letter-spacing:.02em}
+
+.dt{width:100%;border-collapse:separate;border-spacing:0}
+.dt th{text-align:left;padding:8px 10px;font-size:9px;font-weight:600;color:#78716c;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.06)}
+.dt td{padding:8px 10px;font-size:11px;color:#a8a29e;border-bottom:1px solid rgba(255,255,255,.025)}
+.dt tr:last-child td{border-bottom:none}
+.dt .hl{color:#6ee7b7;font-weight:600}
+.dt .hlb{background:rgba(16,185,129,.05)}
+
+.logo-img{height:38px;width:auto;object-fit:contain;border-radius:4px}
+.logo-img-sm{height:26px;width:auto;object-fit:contain;border-radius:3px}
+
+.wa-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:100px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.2);color:#25d366;font-size:12px;font-weight:500;cursor:pointer;transition:all .25s;text-decoration:none;font-family:'Inter',sans-serif}
+.wa-btn:hover{background:rgba(37,211,102,.2);border-color:rgba(37,211,102,.35);transform:translateY(-1px)}
+.wa-btn svg{width:16px;height:16px}
+
+.web-link{display:inline-flex;align-items:center;gap:6px;color:#6ee7b7;font-size:11px;font-weight:500;text-decoration:none;transition:all .2s}
+.web-link:hover{color:#34d399;text-decoration:underline}
+
+::-webkit-scrollbar{width:0}
+
+@media(max-width:768px){
+  .slide-inner{padding:28px 18px}
+  .side-nav{right:10px;gap:8px}
+  .side-dot{width:5px;height:5px}
+  .bottom-bar{left:12px;right:12px;bottom:12px}
+  .pdf-btn{padding:6px 12px;font-size:10px}
+  .pdf-btn span{display:none}
+  .logo-img{height:30px}
+  .cover-header-row{flex-direction:column!important;gap:12px!important;align-items:flex-start!important}
+  .cover-to-row{flex-direction:column!important;gap:6px!important}
+}
+</style>
+</head>
+<body>
+
+<div class="loading-mask" id="ldMask">
+  <div class="spin-ring"></div>
+  <div style="font-size:13px;color:#a8a29e;font-weight:500">Generating PDF…</div>
+  <div style="font-size:10px;color:#57534e">This may take a moment</div>
+</div>
+
+<div class="progress-top" id="progBar" style="width:0%"></div>
+
+<div class="side-nav" id="sideNav"></div>
+
+<div class="bottom-bar">
+  <div class="bottom-left">
+    <button class="nav-btn off" id="btnPrev" onclick="go(-1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="nav-btn" id="btnNext" onclick="go(1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="pdf-btn" onclick="makePDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Download PDF</span>
+    </button>
+  </div>
+  <div class="counter"><b id="cNum">01</b> / 11</div>
+</div>
+
+<div class="slide-wrap" id="wrap">
+
+<!-- S1 COVER -->
+<div class="slide active" data-i="0" data-label="Cover">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <!-- Top bar: Logo + Investor Pitch Deck -->
+    <div class="au au-up d1 flex items-center justify-between mb-6 cover-header-row" style="gap:16px">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img">
+      <span class="tag" style="font-size:10px;letter-spacing:.16em;padding:5px 16px"><span style="width:5px;height:5px;border-radius:50%;background:#34d399;animation:pulse2 2.5s ease infinite"></span> Investor Pitch Deck</span>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 items-center" style="min-height:68vh">
+      <div class="order-2 md:order-1">
+        <!-- To field -->
+        <div class="au au-up d1 mb-5 flex items-center gap-4 cover-to-row" style="border-left:2px solid rgba(16,185,129,.3);padding-left:14px">
+          <div>
+            <div class="text-[9px] text-stone-500 uppercase tracking-[.2em] mb-0.5">Prepared For</div>
+            <div class="text-[13px] text-white font-medium">To : Potential Investors & Partners</div>
+          </div>
+        </div>
+
+        <h1 class="au au-up d2 text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tight leading-[1.08] mb-3">Precision in<br><span class="font-playfair italic gt">Vacuum Technology</span></h1>
+        <p class="au au-up d3 text-sm text-stone-400 max-w-md leading-relaxed mb-2">India's pioneering vacuum heat treatment company — engineering excellence for aerospace, defence, automotive & beyond.</p>
+        <div class="au au-up d3 flex items-center gap-2 mb-7">
+          <a href="https://www.lakshmivacuum.com" target="_blank" class="web-link">
+            <span class="iconify" data-icon="lucide:globe" data-width="12"></span>
+            www.lakshmivacuum.com
+          </a>
+        </div>
+        <div class="au au-up d4 grid grid-cols-2 gap-3 max-w-xs">
+          <div class="gc p-4 text-center"><div class="sn text-2xl text-white">350+</div><div class="text-[9px] text-stone-500 uppercase tracking-[.18em] mt-1">Furnaces</div></div>
+          <div class="gc p-4 text-center"><div class="sn text-2xl text-white">100+</div><div class="text-[9px] text-stone-500 uppercase tracking-[.18em] mt-1">Customers</div></div>
+          <div class="gc p-4 text-center"><div class="sn text-2xl text-white">8+</div><div class="text-[9px] text-stone-500 uppercase tracking-[.18em] mt-1">Countries</div></div>
+          <div class="gc p-4 text-center"><div class="sn text-2xl gt">₹52Cr</div><div class="text-[9px] text-stone-500 uppercase tracking-[.18em] mt-1">FY26 Rev</div></div>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 au au-r d2">
+        <div class="relative">
+          <div class="absolute -inset-3 bg-emerald-500/8 rounded-2xl blur-2xl"></div>
+          <img src="https://kimi-web-img.moonshot.cn/img/brofurnaces.com/702897489ccf10a950813813833e9b26cb067c85.jpg" alt="Vacuum Furnace" class="relative w-full h-[300px] md:h-[420px] object-cover rounded-2xl" style="border:1px solid rgba(255,255,255,.07);box-shadow:0 0 40px rgba(16,185,129,.08)">
+          <div class="absolute bottom-3 left-3 right-3 gc p-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0"><span class="iconify gt" data-icon="lucide:award" data-width="16"></span></div>
+            <div><div class="text-[11px] text-white font-medium">Lakshmi Vacuum Group</div><div class="text-[9px] text-stone-500">First Indian Company to indigenize vacuum furnace technology</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="au au-up d7 text-center mt-4"><span class="text-[9px] text-stone-700 tracking-[.25em] uppercase">Confidential — For Investor Review Only</span></div>
+  </div>
+</div>
+
+<!-- S2 SUMMARY -->
+<div class="slide" data-i="1" data-label="Summary">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">01 — Executive Summary</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Company <span class="font-playfair italic gt">Overview</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-5 gap-6">
+      <div class="md:col-span-3 space-y-4">
+        <p class="au au-up d2 text-[13px] text-stone-300 leading-relaxed"><strong class="text-white">Lakshmi Vacuum Group</strong> (LVTPL) is a technology-driven engineering company specializing in vacuum heat treatment systems and allied industrial solutions. Established in 2003.</p>
+        <p class="au au-up d3 text-[13px] text-stone-400 leading-relaxed">A <strong class="text-white">strong indigenous player</strong> in a niche segment historically dominated by global manufacturers. Diversified business model combining capital equipment manufacturing and recurring service revenues demonstrates strong scalability and long-term growth visibility.</p>
+        <div class="au au-up d4 grid grid-cols-2 gap-2.5">
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1.5"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:shield-check" data-width="13"></span></div><div class="text-[11px] text-white font-medium">First to Indigenize</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">Pioneered local vacuum furnace tech</div></div>
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1.5"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:globe" data-width="13"></span></div><div class="text-[11px] text-white font-medium">Export to Europe</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">First Indian player exporting globally</div></div>
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1.5"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:repeat" data-width="13"></span></div><div class="text-[11px] text-white font-medium">Diversified Revenue</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">Equipment + spares/AMC + steel</div></div>
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1.5"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:trending-up" data-width="13"></span></div><div class="text-[11px] text-white font-medium">18% CAGR Growth</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">₹52Cr to ₹200Cr by FY33</div></div>
+        </div>
+      </div>
+      <div class="md:col-span-2 space-y-3">
+        <div class="au au-r d2"><img src="https://kimi-web-img.moonshot.cn/img/solarmfg.com/15d003ab00d16ec91ce0c5a945cc4c875e459394.jpg" alt="Manufacturing" class="w-full h-36 object-cover rounded-xl" style="border:1px solid rgba(255,255,255,.06)"></div>
+        <div class="au au-r d3 gc p-4"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-1">FY26 Revenue</div><div class="sn text-3xl text-white">51.60 <span class="text-sm text-stone-500">Cr</span></div><div class="text-emerald-400 text-[11px] font-medium mt-0.5">↑ 14.2% YoY</div></div>
+        <div class="au au-r d4 gc p-4"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-1">FY26 EBITDA</div><div class="sn text-3xl text-white">7.51 <span class="text-sm text-stone-500">Cr</span></div><div class="text-stone-500 text-[11px] mt-0.5">15% Margin</div></div>
+        <div class="au au-r d5 gc-a p-4"><div class="text-[9px] gt uppercase tracking-[.15em] mb-1">FY33 Target</div><div class="sn text-3xl gt">200 <span class="text-sm" style="-webkit-text-fill-color:#065f46">Cr</span></div><div class="text-[11px] font-medium mt-0.5" style="color:#34d399">~18% CAGR</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 PROMOTER -->
+<div class="slide" data-i="2" data-label="Promoter">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">02 — Promoter Profile</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Leadership <span class="font-playfair italic gt">& Vision</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-5 gap-6">
+      <div class="md:col-span-2 au au-l d2">
+        <div class="gc p-6 text-center h-full flex flex-col items-center">
+          <div class="relative mb-4 w-28 h-28"><div class="absolute -inset-2 bg-emerald-500/10 rounded-full blur-xl"></div><img src="https://kimi-web-img.moonshot.cn/img/sfo2.digitaloceanspaces.com/4ad23914751e6c1e6098c60364fcc2c16d4275a4.jpeg" alt="Mr. L. N. Prasad" class="relative w-28 h-28 object-cover rounded-full" style="border:2px solid rgba(16,185,129,.2)"></div>
+          <div class="text-lg font-semibold text-white">Mr. L. N. Prasad</div>
+          <div class="text-[11px] gt font-medium mb-4">Promoter & Group MD</div>
+          <div class="w-full h-px bg-white/8 mb-4"></div>
+          <div class="space-y-2.5 text-left w-full">
+            <div class="flex items-center gap-2.5 text-[12px] text-stone-400"><span class="iconify gt" data-icon="lucide:graduation-cap" data-width="13"></span>Electrical Engineer</div>
+            <div class="flex items-center gap-2.5 text-[12px] text-stone-400"><span class="iconify gt" data-icon="lucide:calendar" data-width="13"></span>20+ Years Experience</div>
+            <div class="flex items-center gap-2.5 text-[12px] text-stone-400"><span class="iconify gt" data-icon="lucide:rocket" data-width="13"></span>Founded LVTPL in 2003</div>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-3 space-y-4">
+        <p class="au au-up d3 text-[13px] text-stone-300 leading-relaxed">Mr. L. N. Prasad is a technocrat and visionary electrical engineer with over two decades of experience in vacuum heat treatment technology. He founded the business in 2003, when vacuum furnace technology in India was dominated by MNCs.</p>
+        <p class="au au-up d4 text-[13px] text-stone-400 leading-relaxed">With a focus on <strong class="text-white">indigenization</strong> and <strong class="text-white">cost-effective innovation</strong>, he pioneered indigenous vacuum furnace technology, positioning Lakshmi Vacuum Group as an early mover in a high-barrier segment.</p>
+        <div class="au au-up d5"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2">Key Strengths</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white/[.025] border border-white/[.05] text-[11px] text-stone-300"><span class="iconify gt flex-shrink-0" data-icon="lucide:check-circle-2" data-width="12"></span>Proven indigenization</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white/[.025] border border-white/[.05] text-[11px] text-stone-300"><span class="iconify gt flex-shrink-0" data-icon="lucide:check-circle-2" data-width="12"></span>Strong design capability</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white/[.025] border border-white/[.05] text-[11px] text-stone-300"><span class="iconify gt flex-shrink-0" data-icon="lucide:check-circle-2" data-width="12"></span>Global execution track record</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white/[.025] border border-white/[.05] text-[11px] text-stone-300"><span class="iconify gt flex-shrink-0" data-icon="lucide:check-circle-2" data-width="12"></span>Govt & private networks</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white/[.025] border border-white/[.05] text-[11px] text-stone-300"><span class="iconify gt flex-shrink-0" data-icon="lucide:check-circle-2" data-width="12"></span>300+ furnaces delivered</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white/[.025] border border-white/[.05] text-[11px] text-stone-300"><span class="iconify gt flex-shrink-0" data-icon="lucide:check-circle-2" data-width="12"></span>Defence import substitute</div>
+          </div>
+        </div>
+        <div class="au au-up d6 gc-a p-4"><div class="flex items-center gap-2 mb-1.5"><span class="iconify gt" data-icon="lucide:award" data-width="14"></span><span class="text-[11px] font-semibold gt">Leadership Impact</span></div><p class="text-[10px] leading-relaxed" style="color:rgba(110,231,183,.7)">Scalable engineering-driven model with expansion into aerospace, defence, automotive & industrial sectors. 100+ satisfied customers with strong repeat business.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4 BUSINESS -->
+<div class="slide" data-i="3" data-label="Business">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">03 — Business Overview</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Four Vertical <span class="font-playfair italic gt">Business Model</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-3 mb-4">
+      <div class="au au-up d2 gc p-4"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0"><span class="iconify gt" data-icon="lucide:flame" data-width="18"></span></div><div class="flex-1 min-w-0"><div class="text-[9px] text-stone-500 uppercase tracking-[.12em] mb-0.5">Vertical 01</div><div class="text-[13px] font-semibold text-white mb-1">Vacuum Furnace Manufacturing</div><p class="text-[10px] text-stone-400 leading-relaxed mb-2">Design, engineering & manufacturing of advanced vacuum heat treatment systems. Order value: ₹1.5Cr–7Cr. Lead time: 6–9 months.</p><div class="flex gap-1.5"><span class="badge bg-white/[.04] text-stone-400 border border-white/[.06]">Capital Equipment</span><span class="badge bg-emerald-500/10 gt border border-emerald-500/15">Core Revenue</span></div></div></div></div>
+      <div class="au au-up d3 gc p-4"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0"><span class="iconify text-blue-400" data-icon="lucide:wrench" data-width="18"></span></div><div class="flex-1 min-w-0"><div class="text-[9px] text-stone-500 uppercase tracking-[.12em] mb-0.5">Vertical 02</div><div class="text-[13px] font-semibold text-white mb-1">Spares & Services</div><p class="text-[10px] text-stone-400 leading-relaxed mb-2">Aftermarket: spares, refurbishment, AMC & lifecycle services for LVTPL and multi-OEM equipment. 24/7 support.</p><div class="flex gap-1.5"><span class="badge bg-white/[.04] text-stone-400 border border-white/[.06]">Recurring</span><span class="badge bg-blue-500/10 text-blue-400 border border-blue-500/15">High Margin</span></div></div></div></div>
+      <div class="au au-up d4 gc p-4"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0"><span class="iconify text-amber-400" data-icon="lucide:thermometer" data-width="18"></span></div><div class="flex-1 min-w-0"><div class="text-[9px] text-stone-500 uppercase tracking-[.12em] mb-0.5">Vertical 03</div><div class="text-[13px] font-semibold text-white mb-1">Thermocouple & Calibration</div><p class="text-[10px] text-stone-400 leading-relaxed mb-2">In-house temperature sensors (S,R,K,N types, RTDs) and precision calibration using Fluke & Eurotherm systems.</p><div class="flex gap-1.5"><span class="badge bg-white/[.04] text-stone-400 border border-white/[.06]">Value-Added</span><span class="badge bg-amber-500/10 text-amber-400 border border-amber-500/15">Quality</span></div></div></div></div>
+      <div class="au au-up d5 gc p-4"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center flex-shrink-0"><span class="iconify text-violet-400" data-icon="lucide:layers" data-width="18"></span></div><div class="flex-1 min-w-0"><div class="text-[9px] text-stone-500 uppercase tracking-[.12em] mb-0.5">Vertical 04</div><div class="text-[13px] font-semibold text-white mb-1">Specialized Tool Steel</div><p class="text-[10px] text-stone-400 leading-relaxed mb-2">Exclusive distributor of Rovalma (Europe) premium tool steels — cold work, hot work (H13), plastic mold (P20).</p><div class="flex gap-1.5"><span class="badge bg-white/[.04] text-stone-400 border border-white/[.06]">Cross-Sell</span><span class="badge bg-violet-500/10 text-violet-400 border border-violet-500/15">Repeat Orders</span></div></div></div></div>
+    </div>
+    <div class="au au-up d6"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-3">Revenue Model Mix</div>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div class="gc p-4 text-center"><div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-2"><span class="iconify gt" data-icon="lucide:package" data-width="18"></span></div><div class="text-[12px] font-semibold text-white mb-0.5">Capital Equipment</div><div class="text-[9px] text-stone-500">One-time furnace manufacturing revenue</div></div>
+        <div class="gc-a p-4 text-center"><div class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center mx-auto mb-2"><span class="iconify gt" data-icon="lucide:refresh-cw" data-width="18"></span></div><div class="text-[12px] font-semibold gt mb-0.5">Spares & AMC</div><div class="text-[9px]" style="color:rgba(6,95,70,.7)">Stable, high-margin recurring income</div></div>
+        <div class="gc p-4 text-center"><div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-2"><span class="iconify text-violet-400" data-icon="lucide:shopping-bag" data-width="18"></span></div><div class="text-[12px] font-semibold text-white mb-0.5">Steel & Consumables</div><div class="text-[9px] text-stone-500">Cross-sell from tool steel distribution</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 PRODUCTS -->
+<div class="slide" data-i="4" data-label="Products">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">04 — Product Portfolio</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Vacuum Furnace <span class="font-playfair italic gt">Manufacturing</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5 mb-5">
+      <div class="md:col-span-2 au au-up d2">
+        <div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Furnace Types</div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+          <div class="gc p-2.5 flex items-center gap-2 text-[11px] text-stone-300"><span class="iconify gt" data-icon="lucide:shield" data-width="13"></span>Vacuum Hardening</div>
+          <div class="gc p-2.5 flex items-center gap-2 text-[11px] text-stone-300"><span class="iconify gt" data-icon="lucide:link" data-width="13"></span>Vacuum Brazing</div>
+          <div class="gc p-2.5 flex items-center gap-2 text-[11px] text-stone-300"><span class="iconify gt" data-icon="lucide:sparkles" data-width="13"></span>Vacuum Sintering</div>
+          <div class="gc p-2.5 flex items-center gap-2 text-[11px] text-stone-300"><span class="iconify gt" data-icon="lucide:wind" data-width="13"></span>Vacuum Degassing</div>
+          <div class="gc p-2.5 flex items-center gap-2 text-[11px] text-stone-300"><span class="iconify gt" data-icon="lucide:atom" data-width="13"></span>LPN Furnaces</div>
+          <div class="gc p-2.5 flex items-center gap-2 text-[11px] text-stone-300"><span class="iconify gt" data-icon="lucide:compress" data-width="13"></span>Vacuum Hot Press</div>
+        </div>
+      </div>
+      <div class="au au-r d2">
+        <img src="https://kimi-web-img.moonshot.cn/img/solarmfg.com/563ab657d930e9c7be3a3a220568ca11965197e8.jpg" alt="Furnace Internal" class="w-full h-36 object-cover rounded-xl mb-3" style="border:1px solid rgba(255,255,255,.06)">
+        <div class="gc p-3.5"><div class="text-[9px] gt font-semibold uppercase tracking-[.1em] mb-2">Technical Specs</div>
+          <div class="space-y-1"><div class="flex justify-between text-[11px]"><span class="text-stone-500">Temperature</span><span class="text-white font-medium">800–2,500°C</span></div><div class="flex justify-between text-[11px]"><span class="text-stone-500">Vacuum Level</span><span class="text-white font-medium">Up to 10⁻⁶ mbar</span></div><div class="flex justify-between text-[11px]"><span class="text-stone-500">Charge Capacity</span><span class="text-white font-medium">Up to ~900 kg</span></div><div class="flex justify-between text-[11px]"><span class="text-stone-500">Quench Pressure</span><span class="text-white font-medium">Up to 15 bar</span></div><div class="flex justify-between text-[11px]"><span class="text-stone-500">Hot Zone</span><span class="text-white font-medium">Graphite / All-Metal</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="au au-up d3"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Key Advantages vs Conventional</div>
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:check" data-width="11"></span><span class="text-[11px] text-stone-300">Oxidation-free, superior surface finish</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:check" data-width="11"></span><span class="text-[11px] text-stone-300">Contamination-free processing</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:check" data-width="11"></span><span class="text-[11px] text-stone-300">Up to 2,500°C capability</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:check" data-width="11"></span><span class="text-[11px] text-stone-300">Uniform heating & controlled cooling</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:check" data-width="11"></span><span class="text-[11px] text-stone-300">Extended component life</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:check" data-width="11"></span><span class="text-[11px] text-stone-300">Zero harmful emissions</span></div>
+        </div>
+      </div>
+      <div class="au au-up d4"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Manufacturing Stages</div>
+        <div class="space-y-2">
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center text-[10px] font-bold gt">01</div><div class="text-[9px] gt font-semibold uppercase tracking-[.08em]">Fabrication</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">Hydro pressure test (ASME Sec 8), witnessed by IBR authorities</div></div>
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center text-[10px] font-bold gt">02</div><div class="text-[9px] gt font-semibold uppercase tracking-[.08em]">Assembly</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">Chamber, hot zone, heat exchanger, vacuum systems integration</div></div>
+          <div class="gc p-3.5"><div class="flex items-center gap-2.5 mb-1"><div class="w-7 h-7 rounded-md bg-emerald-500/10 flex items-center justify-center text-[10px] font-bold gt">03</div><div class="text-[9px] gt font-semibold uppercase tracking-[.08em]">Testing</div></div><div class="text-[9px] text-stone-500 leading-relaxed pl-[38px]">Leak test, burnout, TUS (NABL), calibration & customer trial</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 SERVICES -->
+<div class="slide" data-i="5" data-label="Services">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">05 — Services & Allied</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Aftermarket <span class="font-playfair italic gt">Excellence</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-3 mb-4">
+      <div class="au au-up d2 gc p-4"><div class="text-[12px] font-semibold text-white mb-3">Spares & Consumables</div><div class="space-y-2"><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Graphite machined components</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Molybdenum (Mo) parts</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>CFC components</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Vacuum pumps & oils</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Seal kits & valves</div></div></div>
+      <div class="au au-up d3 gc p-4"><div class="text-[12px] font-semibold text-white mb-3">Service Solutions</div><div class="space-y-2"><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Servicing & inspection</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Preventive & breakdown maintenance</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>AMC contracts</div><div class="flex items-center gap-2.5 text-[11px] text-stone-300"><span class="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0"></span>Hot zone refurbishment</div></div><div class="mt-3 flex items-center gap-2"><span class="iconify gt" data-icon="lucide:clock" data-width="13"></span><span class="text-[11px] gt font-medium">24/7 Support · 2-3 day onsite</span></div></div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-3 mb-4">
+      <div class="au au-up d4 gc p-4 text-center"><span class="iconify text-stone-500 mb-2" data-icon="lucide:rotate-ccw" data-width="20"></span><div class="text-[11px] font-semibold text-white mb-0.5">Reverse Engineering</div><div class="text-[9px] text-stone-500 leading-relaxed">Cost optimization & life extension</div></div>
+      <div class="au au-up d5 gc p-4 text-center"><span class="iconify text-stone-500 mb-2" data-icon="lucide:puzzle" data-width="20"></span><div class="text-[11px] font-semibold text-white mb-0.5">Multi-OEM Expertise</div><div class="text-[9px] text-stone-500 leading-relaxed">AMC for global OEM, retrofit & upgrade</div></div>
+      <div class="au au-up d6 gc p-4 text-center"><span class="iconify text-stone-500 mb-2" data-icon="lucide:monitor" data-width="20"></span><div class="text-[11px] font-semibold text-white mb-0.5">Digital & SCADA</div><div class="text-[9px] text-stone-500 leading-relaxed">Remote diagnostics, predictive maintenance</div></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-3">
+      <div class="au au-up d7 gc p-4" style="background:rgba(245,158,11,.025);border-color:rgba(245,158,11,.08)"><div class="flex items-center gap-2.5 mb-3"><div class="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center"><span class="iconify text-amber-400" data-icon="lucide:thermometer" data-width="16"></span></div><div><div class="text-[12px] font-semibold text-white">Thermocouple & Calibration</div><div class="text-[9px] text-stone-500">Est. 2015</div></div></div><div class="grid grid-cols-2 gap-1.5 mb-2"><div class="gc p-1.5 text-center text-[10px] text-stone-300">Noble: S, R</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Base: K, N</div></div><div class="text-[9px] text-stone-500">Calibration: Fluke, Eurotherm · Thermal, Mechanical & Electrical</div></div>
+      <div class="au au-up d8 gc p-4" style="background:rgba(139,92,246,.025);border-color:rgba(139,92,246,.08)"><div class="flex items-center gap-2.5 mb-3"><div class="w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center"><span class="iconify text-violet-400" data-icon="lucide:layers" data-width="16"></span></div><div><div class="text-[12px] font-semibold text-white">Specialized Tool Steel</div><div class="text-[9px] text-stone-500">Exclusive — Rovalma (Europe)</div></div></div><div class="grid grid-cols-3 gap-1.5 mb-2"><div class="gc p-1.5 text-center text-[10px] text-stone-300">Cold</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Hot H13</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Mold P20</div></div><div class="text-[9px] text-violet-400 font-medium">High thermal conductivity · Reduced cycle time</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S7 CUSTOMERS -->
+<div class="slide" data-i="6" data-label="Customers">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">06 — Market Presence</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Customers & <span class="font-playfair italic gt">Global Export</span></h2></div>
+    </div>
+    <div class="au au-up d1 mb-5"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Application Industries</div>
+      <div class="grid grid-cols-4 md:grid-cols-7 gap-2">
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:plane" data-width="16"></span><div class="text-[9px] text-stone-400">Aerospace</div></div>
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:shield" data-width="16"></span><div class="text-[9px] text-stone-400">Defence</div></div>
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:car" data-width="16"></span><div class="text-[9px] text-stone-400">Auto & EV</div></div>
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:wrench" data-width="16"></span><div class="text-[9px] text-stone-400">Tool & Die</div></div>
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:heart-pulse" data-width="16"></span><div class="text-[9px] text-stone-400">Medical</div></div>
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:zap" data-width="16"></span><div class="text-[9px] text-stone-400">Energy</div></div>
+        <div class="gc p-2.5 text-center"><span class="iconify text-stone-400 mb-0.5" data-icon="lucide:flask-conical" data-width="16"></span><div class="text-[9px] text-stone-400">R&D</div></div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-5 gap-5">
+      <div class="md:col-span-3 au au-up d2"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Key Domestic Customers</div>
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[8px] font-bold text-stone-400 flex-shrink-0">TA</div><span class="text-[11px] text-white font-medium flex-1">Tata Advanced Systems</span><span class="badge bg-emerald-500/10 gt border border-emerald-500/15">Defence</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[8px] font-bold text-stone-400 flex-shrink-0">HA</div><span class="text-[11px] text-white font-medium flex-1">HAL</span><span class="badge bg-emerald-500/10 gt border border-emerald-500/15">Aerospace</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[8px] font-bold text-stone-400 flex-shrink-0">DR</div><span class="text-[11px] text-white font-medium flex-1">DRDO</span><span class="badge bg-emerald-500/10 gt border border-emerald-500/15">Defence</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[8px] font-bold text-stone-400 flex-shrink-0">IS</div><span class="text-[11px] text-white font-medium flex-1">ISRO</span><span class="badge bg-emerald-500/10 gt border border-emerald-500/15">Space</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[7px] font-bold text-stone-400 flex-shrink-0">L&T</div><span class="text-[11px] text-white font-medium flex-1">Larsen & Toubro — Defence</span><span class="badge bg-emerald-500/10 gt border border-emerald-500/15">Defence</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[8px] font-bold text-stone-400 flex-shrink-0">HI</div><span class="text-[11px] text-white font-medium flex-1">Hindalco Industries</span><span class="badge bg-blue-500/10 text-blue-400 border border-blue-500/15">Industrial</span></div>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="w-7 h-7 rounded-md bg-white/8 flex items-center justify-center text-[8px] font-bold text-stone-400 flex-shrink-0">DP</div><span class="text-[11px] text-white font-medium flex-1">Dormer Pramet</span><span class="badge bg-blue-500/10 text-blue-400 border border-blue-500/15">Tooling</span></div>
+        </div>
+      </div>
+      <div class="md:col-span-2 space-y-3">
+        <div class="au au-r d2"><img src="https://kimi-web-img.moonshot.cn/img/www.eigenengineering.com/b216118f5c1863b559f6d6bcb8cd0ccbd805db09.jpg" alt="Aerospace" class="w-full h-28 object-cover rounded-xl" style="border:1px solid rgba(255,255,255,.06)"></div>
+        <div class="au au-r d3 gc p-4"><div class="sn text-3xl text-white mb-0.5">8+</div><div class="text-[10px] text-stone-500 mb-3">Countries Supplied</div><div class="grid grid-cols-2 gap-1.5"><div class="gc p-1.5 text-center text-[10px] text-stone-300">USA</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Germany</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Bulgaria</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Saudi Arabia</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">UAE</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Israel</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Bangladesh</div><div class="gc p-1.5 text-center text-[10px] text-stone-300">Australia</div></div></div>
+        <div class="au au-r d4 gc-a p-4"><div class="text-[10px] font-semibold gt mb-2">Export Focus</div><div class="space-y-1.5"><div class="flex items-center gap-2 text-[10px]" style="color:rgba(110,231,183,.8)"><span class="iconify" data-icon="lucide:check" data-width="10" style="color:#34d399"></span>Europe, Middle East & SE Asia</div><div class="flex items-center gap-2 text-[10px]" style="color:rgba(110,231,183,.8)"><span class="iconify" data-icon="lucide:check" data-width="10" style="color:#34d399"></span>International OEM collaborations</div><div class="flex items-center gap-2 text-[10px]" style="color:rgba(110,231,183,.8)"><span class="iconify" data-icon="lucide:check" data-width="10" style="color:#34d399"></span>Growing repeat business globally</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 INFRA -->
+<div class="slide" data-i="7" data-label="Infrastructure">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">07 — Infrastructure</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Facility & <span class="font-playfair italic gt">Quality Systems</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5 mb-5">
+      <div class="md:col-span-2 au au-up d2">
+        <img src="https://kimi-web-img.moonshot.cn/img/easthamforge.com/3a3951223b7e9ef12c9e3ea35d83834c8bcec6eb.jpg" alt="Facility" class="w-full h-40 object-cover rounded-xl mb-3" style="border:1px solid rgba(255,255,255,.06)">
+        <div class="gc p-4"><div class="text-[12px] font-semibold text-white mb-3">Manufacturing Facility — Dabaspet, Karnataka</div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:building" data-width="13"></span></div><div><div class="text-[11px] font-medium text-white">Block 1: Fabrication</div><div class="text-[9px] text-stone-500">~20,000 sq. ft.</div></div></div>
+            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:test-tubes" data-width="13"></span></div><div><div class="text-[11px] font-medium text-white">Block 2: Testing</div><div class="text-[9px] text-stone-500">~20,000 sq. ft.</div></div></div>
+            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:map-pin" data-width="13"></span></div><div><div class="text-[11px] font-medium text-white">Total Land</div><div class="text-[9px] text-stone-500">2 Acres</div></div></div>
+            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center"><span class="iconify gt" data-icon="lucide:users" data-width="13"></span></div><div><div class="text-[11px] font-medium text-white">Workforce</div><div class="text-[9px] text-stone-500">~80 employees</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="au au-r d2 space-y-3">
+        <div class="gc p-4"><div class="text-[10px] font-semibold text-white uppercase tracking-[.1em] mb-2.5">Certifications</div>
+          <div class="space-y-1.5"><div class="gc p-2.5"><div class="text-[11px] font-medium text-white">ISO 9001:2015</div><div class="text-[9px] text-stone-500">Quality Management</div></div><div class="gc p-2.5"><div class="text-[11px] font-medium text-white">ISO 45001:2018</div><div class="text-[9px] text-stone-500">Health & Safety</div></div><div class="gc p-2.5"><div class="text-[11px] font-medium text-white">ISO 14001:2015</div><div class="text-[9px] text-stone-500">Environmental</div></div></div>
+        </div>
+        <div class="gc p-4"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-0.5">Power Capacity</div><div class="sn text-2xl gt">170 KVA</div></div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="au au-up d3 gc p-4"><div class="text-[12px] font-semibold text-white mb-3">Capacity & Scalability</div>
+        <div class="space-y-3">
+          <div><div class="flex justify-between text-[10px] mb-1"><span class="text-stone-500">Installed Capacity</span><span class="text-white font-medium">30/yr</span></div><div class="h-1 bg-white/8 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:60%"></div></div></div>
+          <div><div class="flex justify-between text-[10px] mb-1"><span class="text-stone-500">Current Utilization</span><span class="gt font-medium">~70%</span></div><div class="h-1 bg-white/8 rounded-full overflow-hidden"><div class="h-full bg-emerald-400 rounded-full" style="width:70%"></div></div></div>
+          <div><div class="flex justify-between text-[10px] mb-1"><span class="text-stone-500">Scalable (no CapEx)</span><span class="text-white font-medium">50/yr</span></div><div class="h-1 bg-white/8 rounded-full overflow-hidden"><div class="h-full bg-emerald-300 rounded-full" style="width:100%"></div></div></div>
+        </div>
+      </div>
+      <div class="au au-up d4 gc p-4"><div class="text-[12px] font-semibold text-white mb-3">Quality & Digital Systems</div>
+        <div class="space-y-2">
+          <div class="p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="text-[11px] font-medium text-white mb-1">Multi-Level QA</div><div class="flex gap-1.5"><span class="px-2 py-0.5 rounded-full bg-white/[.04] text-[9px] text-stone-400 border border-white/[.08]">IQC</span><span class="px-2 py-0.5 rounded-full bg-white/[.04] text-[9px] text-stone-400 border border-white/[.08]">IPQC</span><span class="px-2 py-0.5 rounded-full bg-white/[.04] text-[9px] text-stone-400 border border-white/[.08]">FAT</span></div></div>
+          <div class="p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="text-[11px] font-medium text-white mb-0.5">ERP: TCS iON</div><div class="text-[9px] text-stone-500">End-to-end traceability</div></div>
+          <div class="p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><div class="text-[11px] font-medium text-white mb-0.5">Digital Project Execution</div><div class="text-[9px] text-stone-500">Real-time tracking & visibility</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 FINANCIALS -->
+<div class="slide" data-i="8" data-label="Financials">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">08 — Financial Performance</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Historical <span class="font-playfair italic gt">Financials</span></h2></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="au au-up d2 gc p-4 text-center"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-1">FY26 Revenue</div><div class="sn text-2xl text-white">51.6Cr</div><div class="gt text-[10px] font-medium mt-0.5">↑ 14.2% YoY</div></div>
+      <div class="au au-up d3 gc p-4 text-center"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-1">FY26 EBITDA</div><div class="sn text-2xl text-white">7.5Cr</div><div class="text-stone-500 text-[10px] mt-0.5">15% Margin</div></div>
+      <div class="au au-up d4 gc p-4 text-center"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-1">FY26 PAT</div><div class="sn text-2xl text-white">2.7Cr</div><div class="text-stone-500 text-[10px] mt-0.5">7% Margin</div></div>
+      <div class="au au-up d5 gc p-4 text-center"><div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-1">Gross Margin</div><div class="sn text-2xl text-white">45%</div><div class="text-stone-500 text-[10px] mt-0.5">FY26</div></div>
+    </div>
+    <div class="au au-up d3 mb-5"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Historical P&L (Cr)</div>
+      <div class="gc overflow-hidden overflow-x-auto"><table class="dt"><thead><tr><th>Particulars</th><th class="text-right">FY23</th><th class="text-right">FY24</th><th class="text-right">FY25</th><th class="text-right hlb" style="color:#6ee7b7">FY26</th></tr></thead><tbody><tr><td class="text-white font-medium">Revenue</td><td class="text-right">42.33</td><td class="text-right">42.98</td><td class="text-right">45.17</td><td class="text-right hl hlb">51.60</td></tr><tr><td class="text-white font-medium">PAT</td><td class="text-right">2.61</td><td class="text-right">2.75</td><td class="text-right">2.97</td><td class="text-right hl hlb">2.67</td></tr></tbody><tfoot><tr><td>GP %</td><td class="text-right">41%</td><td class="text-right">44%</td><td class="text-right">48%</td><td class="text-right hl hlb">45%</td></tr><tr><td>EBITDA %</td><td class="text-right">16%</td><td class="text-right">18%</td><td class="text-right">17%</td><td class="text-right hl hlb">15%</td></tr><tr><td>NP %</td><td class="text-right">10%</td><td class="text-right">9%</td><td class="text-right">9%</td><td class="text-right hl hlb">7%</td></tr></tfoot></table></div>
+    </div>
+    <div class="au au-up d5"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Revenue Trend</div>
+      <div class="gc p-5"><div class="flex items-end gap-5 h-20">
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t bg-stone-700" style="height:70%"></div><div class="text-[11px] text-white font-medium mt-1.5">42.3</div><div class="text-[9px] text-stone-500">FY23</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t bg-stone-600" style="height:72%"></div><div class="text-[11px] text-white font-medium mt-1.5">43.0</div><div class="text-[9px] text-stone-500">FY24</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:76%;background:rgba(16,185,129,.3)"></div><div class="text-[11px] text-white font-medium mt-1.5">45.2</div><div class="text-[9px] text-stone-500">FY25</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t bg-emerald-500" style="height:87%"></div><div class="text-[11px] gt font-semibold mt-1.5">51.6</div><div class="text-[9px] gt font-medium">FY26</div></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 PROJECTIONS -->
+<div class="slide" data-i="9" data-label="Growth">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">09 — Growth Outlook</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Future <span class="font-playfair italic gt">Projections</span></h2></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="au au-up d2 gc-a p-4 text-center"><div class="text-[9px] gt uppercase tracking-[.15em] mb-1">FY33 Revenue</div><div class="sn text-2xl gt">200Cr</div><div class="text-[10px] font-medium mt-0.5" style="color:#34d399">~18% CAGR</div></div>
+      <div class="au au-up d3 gc-a p-4 text-center"><div class="text-[9px] gt uppercase tracking-[.15em] mb-1">FY33 EBITDA</div><div class="sn text-2xl gt">53.3Cr</div><div class="text-[10px] font-medium mt-0.5" style="color:#34d399">26% Margin</div></div>
+      <div class="au au-up d4 gc-a p-4 text-center"><div class="text-[9px] gt uppercase tracking-[.15em] mb-1">FY33 PAT</div><div class="sn text-2xl gt">18.9Cr</div><div class="text-[10px] font-medium mt-0.5" style="color:#34d399">12% Margin</div></div>
+      <div class="au au-up d5 gc-a p-4 text-center"><div class="text-[9px] gt uppercase tracking-[.15em] mb-1">Gross Margin</div><div class="sn text-2xl gt">60%</div><div class="text-[10px] font-medium mt-0.5" style="color:#34d399">FY33 Target</div></div>
+    </div>
+    <div class="au au-up d3 mb-4"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Projected P&L (Cr)</div>
+      <div class="gc overflow-hidden overflow-x-auto"><table class="dt"><thead><tr><th>Particulars</th><th class="text-right">FY27</th><th class="text-right">FY28</th><th class="text-right">FY29</th><th class="text-right">FY30</th><th class="text-right">FY31</th><th class="text-right">FY32</th><th class="text-right hlb" style="color:#6ee7b7">FY33</th></tr></thead><tbody><tr><td class="text-white font-medium">Revenue</td><td class="text-right">67.08</td><td class="text-right">80.50</td><td class="text-right">96.60</td><td class="text-right">115.91</td><td class="text-right">139.10</td><td class="text-right">166.92</td><td class="text-right hl hlb">200.30</td></tr><tr><td class="text-white font-medium">PAT</td><td class="text-right">5.38</td><td class="text-right">5.78</td><td class="text-right">6.20</td><td class="text-right">9.89</td><td class="text-right">13.09</td><td class="text-right">15.71</td><td class="text-right hl hlb">18.85</td></tr></tbody><tfoot><tr><td>GP %</td><td class="text-right">59%</td><td class="text-right">58%</td><td class="text-right">56%</td><td class="text-right">59%</td><td class="text-right">60%</td><td class="text-right">60%</td><td class="text-right hl hlb">60%</td></tr><tr><td>EBITDA %</td><td class="text-right">25%</td><td class="text-right">24%</td><td class="text-right">23%</td><td class="text-right">25%</td><td class="text-right">26%</td><td class="text-right">26%</td><td class="text-right hl hlb">26%</td></tr><tr><td>NP %</td><td class="text-right">11%</td><td class="text-right">10%</td><td class="text-right">9%</td><td class="text-right">11%</td><td class="text-right">12%</td><td class="text-right">12%</td><td class="text-right hl hlb">12%</td></tr></tfoot></table></div>
+    </div>
+    <div class="au au-up d5 mb-4"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-2.5">Revenue Projection FY27–FY33</div>
+      <div class="gc p-5"><div class="flex items-end gap-2.5 h-24">
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:33%;background:rgba(16,185,129,.2)"></div><div class="text-[10px] text-white font-medium mt-1.5">67</div><div class="text-[8px] text-stone-500">FY27</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:40%;background:rgba(16,185,129,.25)"></div><div class="text-[10px] text-white font-medium mt-1.5">81</div><div class="text-[8px] text-stone-500">FY28</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:48%;background:rgba(16,185,129,.3)"></div><div class="text-[10px] text-white font-medium mt-1.5">97</div><div class="text-[8px] text-stone-500">FY29</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:58%;background:rgba(16,185,129,.4)"></div><div class="text-[10px] text-white font-medium mt-1.5">116</div><div class="text-[8px] text-stone-500">FY30</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:69%;background:rgba(16,185,129,.55)"></div><div class="text-[10px] text-white font-medium mt-1.5">139</div><div class="text-[8px] text-stone-500">FY31</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t" style="height:83%;background:rgba(16,185,129,.7)"></div><div class="text-[10px] text-white font-medium mt-1.5">167</div><div class="text-[8px] text-stone-500">FY32</div></div>
+        <div class="flex-1 flex flex-col items-center"><div class="w-full rounded-t bg-emerald-500" style="height:100%"></div><div class="text-[10px] gt font-semibold mt-1.5">200</div><div class="text-[8px] gt font-medium">FY33</div></div>
+      </div></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div class="au au-up d6 flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:factory" data-width="14"></span><div><div class="text-[9px] font-medium text-white">Capacity: 30→50/yr</div><div class="text-[8px] text-stone-500">No CapEx needed</div></div></div>
+      <div class="au au-up d6 flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:globe" data-width="14"></span><div><div class="text-[9px] font-medium text-white">Export 30%+ growing</div><div class="text-[8px] text-stone-500">Europe, ME, SE Asia</div></div></div>
+      <div class="au au-up d6 flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:shield" data-width="14"></span><div><div class="text-[9px] font-medium text-white">Aero, Defence & EV</div><div class="text-[8px] text-stone-500">Import substitution</div></div></div>
+      <div class="au au-up d6 flex items-center gap-2.5 p-2.5 rounded-lg bg-white/[.02] border border-white/[.04]"><span class="iconify gt flex-shrink-0" data-icon="lucide:trending-up" data-width="14"></span><div><div class="text-[9px] font-medium text-white">Op. leverage expansion</div><div class="text-[8px] text-stone-500">Services margin growth</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 VISION + CONTACT -->
+<div class="slide" data-i="10" data-label="Vision">
+  <div class="bg-layer bg-mesh"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="slide-inner">
+    <div class="au au-up d1 flex items-center gap-3 mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img-sm">
+      <div><span class="tag">10 — Strategic Vision</span><h2 class="text-3xl md:text-4xl font-extralight text-white tracking-tight mt-2">Vision & <span class="font-playfair italic gt">Investment Thesis</span></h2></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <div class="au au-up d2 gc p-5"><div class="text-[10px] gt font-semibold uppercase tracking-[.1em] mb-3">Vision</div>
+        <div class="space-y-2.5">
+          <div class="flex gap-2.5 items-start"><span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:star" data-width="11" style="color:#34d399"></span><span class="text-[11px] text-stone-300 leading-relaxed">Globally recognized leader in vacuum heat treatment</span></div>
+          <div class="flex gap-2.5 items-start"><span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:star" data-width="11" style="color:#34d399"></span><span class="text-[11px] text-stone-300 leading-relaxed">Cost-effective engineering aligned with international standards</span></div>
+          <div class="flex gap-2.5 items-start"><span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:star" data-width="11" style="color:#34d399"></span><span class="text-[11px] text-stone-300 leading-relaxed">Continuous innovation strengthening indigenous manufacturing</span></div>
+          <div class="flex gap-2.5 items-start"><span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:star" data-width="11" style="color:#34d399"></span><span class="text-[11px] text-stone-300 leading-relaxed">Growth aligned with global industrial demand</span></div>
+        </div>
+      </div>
+      <div class="au au-up d3 gc-a p-5"><div class="text-[10px] gt font-semibold uppercase tracking-[.1em] mb-3">Mission</div><p class="font-playfair italic text-[12px] leading-relaxed" style="color:rgba(110,231,183,.85)">"To deliver high-performance, efficient, and reliable thermal systems through strong engineering design, quality manufacturing, and responsive after-sales support, ensuring long-term customer satisfaction through continuous improvement."</p></div>
+    </div>
+    <div class="au au-up d4 gc-a p-5 text-center mb-4" style="background:linear-gradient(135deg,rgba(16,185,129,.04),rgba(6,95,70,.08))">
+      <p class="text-[12px] md:text-[13px] leading-relaxed max-w-2xl mx-auto mb-4" style="color:rgba(167,243,208,.85)">Lakshmi Vacuum Group represents a compelling combination of <strong class="text-white">technical expertise</strong>, <strong class="text-white">execution capability</strong>, and <strong class="text-white">growth potential</strong> — well-positioned to benefit from increasing demand for advanced heat treatment, growing localization, and expanding export opportunities.</p>
+      <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto">
+        <div class="gc p-3 text-center"><div class="sn text-xl gt">200Cr</div><div class="text-[8px]" style="color:rgba(6,95,70,.7)">Target Rev. FY33</div></div>
+        <div class="gc p-3 text-center"><div class="sn text-xl gt">26%</div><div class="text-[8px]" style="color:rgba(6,95,70,.7)">EBITDA Margin</div></div>
+        <div class="gc p-3 text-center"><div class="sn text-xl gt">19Cr</div><div class="text-[8px]" style="color:rgba(6,95,70,.7)">Target PAT FY33</div></div>
+      </div>
+    </div>
+    <div class="au au-up d5 mb-4"><div class="text-[10px] text-white font-semibold uppercase tracking-[.12em] mb-3">Investment Thesis</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+        <div class="gc p-3.5"><span class="iconify" data-icon="lucide:trophy" data-width="16" style="color:#34d399;display:block;margin-bottom:4px"></span><div class="text-[11px] font-semibold text-white mb-0.5">First-Mover</div><div class="text-[9px] text-stone-500">20+ years in high-barrier niche</div></div>
+        <div class="gc p-3.5"><span class="iconify" data-icon="lucide:target" data-width="16" style="color:#34d399;display:block;margin-bottom:4px"></span><div class="text-[11px] font-semibold text-white mb-0.5">Critical Sectors</div><div class="text-[9px] text-stone-500">HAL, DRDO, ISRO, Tata</div></div>
+        <div class="gc p-3.5"><span class="iconify" data-icon="lucide:repeat" data-width="16" style="color:#34d399;display:block;margin-bottom:4px"></span><div class="text-[11px] font-semibold text-white mb-0.5">Recurring Revenue</div><div class="text-[9px] text-stone-500">Spares, AMC, multi-OEM</div></div>
+        <div class="gc p-3.5"><span class="iconify" data-icon="lucide:globe-2" data-width="16" style="color:#34d399;display:block;margin-bottom:4px"></span><div class="text-[11px] font-semibold text-white mb-0.5">Export-Ready</div><div class="text-[9px] text-stone-500">8+ countries, competitive</div></div>
+        <div class="gc p-3.5"><span class="iconify" data-icon="lucide:bar-chart-3" data-width="16" style="color:#34d399;display:block;margin-bottom:4px"></span><div class="text-[11px] font-semibold text-white mb-0.5">Growth Visibility</div><div class="text-[9px] text-stone-500">~18% CAGR, margin expansion</div></div>
+        <div class="gc p-3.5"><span class="iconify" data-icon="lucide:lock" data-width="16" style="color:#34d399;display:block;margin-bottom:4px"></span><div class="text-[11px] font-semibold text-white mb-0.5">High Moat</div><div class="text-[9px] text-stone-500">Deep technical complexity</div></div>
+      </div>
+    </div>
+
+    <!-- Contact / Connect Section -->
+    <div class="au au-up d7" style="background:linear-gradient(135deg,rgba(16,185,129,.03),rgba(6,95,70,.06));border:1px solid rgba(16,185,129,.1);border-radius:16px;padding:28px 32px">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <!-- Logo + Company Name -->
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <img src="https://z-cdn-media.chatglm.cn/files/fece8a75-e9f0-46bd-86e3-07a91fbc02f2.png?auth_key=1877913001-ecfd0ad483bc453892819ed7574a4ba1-0-34549c6360dbc280f23b934f60417311" alt="Lakshmi Vacuum" class="logo-img">
+          <div>
+            <div class="text-[14px] font-semibold text-white">Lakshmi Vacuum Group</div>
+            <div class="text-[10px] text-stone-500">Since 2003 · Dabaspet, Karnataka, India</div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden md:block w-px h-12 bg-white/10 flex-shrink-0"></div>
+
+        <!-- Feel Free to Connect -->
+        <div class="flex-1 text-center md:text-left">
+          <div class="text-[12px] font-medium text-white mb-1">Feel free to connect with us for detailed discussions</div>
+          <div class="flex flex-wrap items-center gap-4 justify-center md:justify-start">
+            <a href="https://wa.me/918618764541?text=Hi%2C%20I%20came%20across%20the%20Lakshmi%20Vacuum%20Group%20Investor%20Pitch%20Deck%20and%20would%20like%20to%20learn%20more." target="_blank" class="wa-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Chat on WhatsApp
+            </a>
+            <a href="https://www.lakshmivacuum.com" target="_blank" class="web-link">
+              <span class="iconify" data-icon="lucide:external-link" data-width="12"></span>
+              www.lakshmivacuum.com
+            </a>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="flex-shrink-0 text-center md:text-right">
+          <div class="text-[9px] text-stone-500 uppercase tracking-[.15em] mb-0.5">Direct Contact</div>
+          <a href="tel:+918618764541" class="text-[13px] text-white font-medium hover:gt transition-colors">+91 8618764541</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const N=11;let cur=0,busy=false;
+const slides=()=>document.querySelectorAll('.slide');
+const dots=()=>document.querySelectorAll('.side-dot');
+
+(function(){
+  const nav=document.getElementById('sideNav');
+  document.querySelectorAll('.slide').forEach((s,i)=>{
+    const d=document.createElement('button');
+    d.className='side-dot'+(i===0?' on':'');
+    d.dataset.tip=s.dataset.label||'';
+    d.onclick=()=>jump(i);
+    nav.appendChild(d);
+  });
+})();
+
+function jump(i){
+  if(busy||i===cur||i<0||i>=N)return;
+  busy=true;cur=i;
+  slides().forEach((s,j)=>{s.classList.toggle('active',j===i)});
+  dots().forEach((d,j)=>d.classList.toggle('on',j===i));
+  document.getElementById('progBar').style.width=((i+1)/N*100)+'%';
+  document.getElementById('cNum').textContent=String(i+1).padStart(2,'0');
+  document.getElementById('btnPrev').classList.toggle('off',i===0);
+  document.getElementById('btnNext').classList.toggle('off',i===N-1);
+  setTimeout(()=>{busy=false},650);
+}
+function go(d){jump(cur+d)}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}
+});
+
+let wt;
+document.addEventListener('wheel',e=>{
+  if(wt)return;wt=setTimeout(()=>wt=null,900);
+  if(e.deltaY>20)go(1);else if(e.deltaY<-20)go(-1);
+},{passive:true});
+
+let ty=0;
+document.addEventListener('touchstart',e=>{ty=e.changedTouches[0].screenY},{passive:true});
+document.addEventListener('touchend',e=>{
+  const d=ty-e.changedTouches[0].screenY;
+  if(Math.abs(d)>45){d>0?go(1):go(-1)}
+},{passive:true});
+
+async function makePDF(){
+  const mask=document.getElementById('ldMask');
+  mask.classList.add('show');
+  const uiEls=[...document.querySelectorAll('.side-nav,.bottom-bar,.progress-top')];
+  uiEls.forEach(e=>e.style.display='none');
+
+  const pw=document.createElement('div');
+  pw.style.cssText='position:fixed;inset:0;z-index:9999;background:#050505;overflow-y:auto;overflow-x:hidden;';
+  document.body.appendChild(pw);
+
+  const allSlides=document.querySelectorAll('.slide');
+  for(let i=0;i<allSlides.length;i++){
+    const s=allSlides[i];
+    const page=document.createElement('div');
+    page.style.cssText='width:100vw;min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#050505;';
+    s.querySelectorAll('.bg-layer').forEach(bg=>{
+      const c=bg.cloneNode(true);c.style.cssText=bg.style.cssText;page.appendChild(c);
+    });
+    const inner=s.querySelector('.slide-inner');
+    if(inner){
+      const ic=inner.cloneNode(true);
+      ic.querySelectorAll('.au').forEach(a=>{a.style.opacity='1';a.style.transform='none';a.style.animation='none'});
+      page.appendChild(ic);
+    }
+    if(i<allSlides.length-1){
+      const sep=document.createElement('div');sep.style.cssText='height:0;page-break-after:always;';page.appendChild(sep);
+    }
+    pw.appendChild(page);
+  }
+
+  const imgs=pw.querySelectorAll('img');
+  await Promise.all([...imgs].map(img=>{if(img.complete)return Promise.resolve();return new Promise(r=>{img.onload=r;img.onerror=r})}));
+  await new Promise(r=>setTimeout(r,500));
+
+  try{
+    const opt={
+      margin:0,
+      filename:'Lakshmi_Vacuum_Group_Investor_Pitch_Deck.pdf',
+      image:{type:'jpeg',quality:0.95},
+      html2canvas:{scale:2,useCORS:true,letterRendering:true,logging:false,backgroundColor:'#050505',width:1200,windowWidth:1200},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['css','legacy'],before:'.pdf-page-break'}
+    };
+    await html2pdf().set(opt).from(pw).save();
+  }catch(err){console.error(err);alert('PDF generation failed. Please try again.');}
+
+  document.body.removeChild(pw);
+  uiEls.forEach(e=>e.style.display='');
+  mask.classList.remove('show');
+}
+</script>
+</body>
+</html>
